@@ -1,62 +1,68 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include "utilities.hpp"
+#include "definitions.hpp"
 
-
-#define PIN            7
-#define NUMPIXELS      26 
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-int delayval = 500; // delay for half a second
+int delay_value = 50;
+int max_brightness = 255;
+
+
+volatile Mode mode = Mode::BRIGHTNESS;
 
 void setup() 
 {
-  pixels.begin(); // This initializes the NeoPixel library.
+	pixels.begin();
+	Serial.begin(9600);
+	pinMode(INPUT_1_PIN, INPUT);
+  	attachInterrupt(digitalPinToInterrupt(INPUT_1_PIN), ModeSelector, FALLING);
 }
 
 void loop() 
 {
-	// For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
-	for(int i=0;i<NUMPIXELS;i++)
+	for (int i = 0; i < NUMPIXELS; i++)
 	{
-		// pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-		pixels.setPixelColor(i, pixels.Color(random(0, 50), random(0, 50), random(0, 50))); // Moderately bright green color.
-
-		pixels.show(); // This sends the updated pixel color to the hardware.
-
-		delay(delayval); // Delay for a period of time (in milliseconds).
+		if (mode == Mode::BRIGHTNESS) max_brightness = GetBrightness();
+		else delay_value = GetDelay();
+		
+		pixels.setPixelColor(i, pixels.Color(random(0, max_brightness), random(0, max_brightness), random(0, max_brightness))); 
+		pixels.show(); 
+		delay(delay_value); 
 	}
 
-	for(int i=0;i<NUMPIXELS;i++)
+	for (int i = 0; i < NUMPIXELS; i++)
 	{
-		// pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-		pixels.setPixelColor(i, pixels.Color(0, 0, 0)); // Moderately bright green color.
-
-		pixels.show(); // This sends the updated pixel color to the hardware.
-
-		delay(delayval); // Delay for a period of time (in milliseconds).
+		if (mode == Mode::BRIGHTNESS) max_brightness = GetBrightness();
+		else delay_value = GetDelay();
+		
+		pixels.setPixelColor(i, pixels.Color(0, 0, 0)); 
+		pixels.show();
+		delay(delay_value);
 	}
 
-	for(int i=NUMPIXELS - 1;i>0;i--)
+	for (int i = NUMPIXELS - 1; i > 0; i--)
 	{
-		// pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-		pixels.setPixelColor(i, pixels.Color(random(0, 50), random(0, 50), random(0, 50))); // Moderately bright green color.
-
-		pixels.show(); // This sends the updated pixel color to the hardware.
-
-		delay(delayval); // Delay for a period of time (in milliseconds).
+		if (mode == Mode::BRIGHTNESS) max_brightness = GetBrightness();
+		else delay_value = GetDelay();
+		
+		int max_brightness = map(ReadPotentiometer(), 0, 1023, MIN_BRIGHTNESS, 255);
+		pixels.setPixelColor(i, pixels.Color(random(0, max_brightness), random(0, max_brightness), random(0, max_brightness)));
+		pixels.show(); 
+		delay(delay_value);
 	}
 
-	for(int i=NUMPIXELS - 1;i>0;i--)
+	for (int i = NUMPIXELS - 1; i > 0; i--)
 	{
-		// pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-		pixels.setPixelColor(i, pixels.Color(0,0,0)); // Moderately bright green color.
-
-		pixels.show(); // This sends the updated pixel color to the hardware.
-
-		delay(delayval); // Delay for a period of time (in milliseconds).
+		if (mode == Mode::BRIGHTNESS) max_brightness = GetBrightness();
+		else delay_value = GetDelay();
+		
+		pixels.setPixelColor(i, pixels.Color(0,0,0));
+		pixels.show();
+		delay(delay_value);
 	}
 }
