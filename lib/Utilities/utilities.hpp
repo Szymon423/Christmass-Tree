@@ -1,24 +1,17 @@
 #pragma once
 
+#include "modes.hpp"
 
 /// @brief reads potentiometer
 /// @return integer value in range [0, 1024] 
 int ReadPotentiometer();
 
 
-/// @brief defines what is beeing controlled by Potentiometer
-enum class Mode
-{
-    BRIGHTNESS,
-    DELAY
-};
-
-
 /// @brief globall value defined in main (switch for potentiometer)
-extern volatile Mode mode;
+extern volatile PotentiometerMode mode;
 
 
-/// @brief function to use in interrupt to controll Potentiometer Mode
+/// @brief function to use in interrupt to controll Potentiometer PotentiometerMode
 void ModeSelector();
 
 

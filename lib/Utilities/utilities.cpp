@@ -11,12 +11,12 @@ int ReadPotentiometer()
 
 void ModeSelector()
 {
-    if (mode == Mode::BRIGHTNESS) 
+    if (mode == PotentiometerMode::BRIGHTNESS) 
     {
-        mode = Mode::DELAY;
+        mode = PotentiometerMode::DELAY;
         return;
     }
-    mode = Mode::BRIGHTNESS;
+    mode = PotentiometerMode::BRIGHTNESS;
 }
 
 int GetDelay()
@@ -26,5 +26,5 @@ int GetDelay()
 
 int GetBrightness()
 {
-    return map(ReadPotentiometer(), 0, 1023, MIN_BRIGHTNESS, 255);
+    return map(ReadPotentiometer(), 0, 1023, 255, MIN_BRIGHTNESS);
 }
