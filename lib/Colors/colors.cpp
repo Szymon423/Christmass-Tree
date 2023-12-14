@@ -29,43 +29,42 @@ Color GetColor(ColorMode colorMode)
 {
     if (powerMode == PowerMode::OFF) return Color(0);
 
-    int max_brightness = GetMaxBrightness();
+    int maxBrightness = GetMaxBrightness();
     switch (colorMode)
     {
         case ColorMode::RANDOM:
         {
-            return Color(random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness));
+            return Color(random(MIN_BRIGHTNESS, maxBrightness), random(MIN_BRIGHTNESS, maxBrightness), random(MIN_BRIGHTNESS, maxBrightness));
         }
         case ColorMode::WHITE_TONES:
         {
-            return Color(random(MIN_BRIGHTNESS, max_brightness));
+            return Color(random(MIN_BRIGHTNESS, maxBrightness));
         }
         default:
         {
-            return Color(random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness));
+            return Color(random(MIN_BRIGHTNESS, maxBrightness), random(MIN_BRIGHTNESS, maxBrightness), random(MIN_BRIGHTNESS, maxBrightness));
         }
     }
 }
 
-Color GetNextColor(ColorMode colorMode, Color previousColor)
+Color GetNextColor(ColorMode colorMode, Color previousColor, int brightness)
 {
     if (powerMode == PowerMode::OFF) return Color(0);
 
-    int max_brightness = GetMaxBrightness();
     switch (colorMode)
     {
         case ColorMode::RANDOM:
         {
-            return Color(random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness));
+            return Color(random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness));
         }
         case ColorMode::WHITE_TONES:
         {
-            return Color(random(MIN_BRIGHTNESS, max_brightness));
+            return Color(random(MIN_BRIGHTNESS, brightness));
         }
         /// convert it to future color changing based on previous colors
         default:
         {
-            return Color(random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness), random(MIN_BRIGHTNESS, max_brightness));
+            return Color(random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness));
         }
     }
 }

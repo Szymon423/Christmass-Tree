@@ -10,16 +10,6 @@ int ReadPotentiometer()
     return analogRead(POTENTIOMETER_PIN);
 }
 
-void ChangePotentiometerMode()
-{
-    if (potentiometerMode == PotentiometerMode::BRIGHTNESS) 
-    {
-        potentiometerMode = PotentiometerMode::DELAY;
-        return;
-    }
-    potentiometerMode = PotentiometerMode::BRIGHTNESS;
-}
-
 void ChangePoweMode()
 {
     if (powerMode == PowerMode::ON) 
@@ -30,9 +20,37 @@ void ChangePoweMode()
     powerMode = PowerMode::ON;
 }
 
+void ChangeLightMode()
+{
+    switch (lightMode)
+    {
+        case LightMode::PULSE_INDIVIDUAL_WHITE_TONES: 
+        {
+            lightMode = LightMode::PULSE_INDIVIDUAL_RANDOM;
+            break;
+        }
+        case LightMode::PULSE_INDIVIDUAL_RANDOM: 
+        {
+            lightMode = LightMode::PULSE_ALL_WHITE_TONES;
+            break;
+        }
+        case LightMode::PULSE_ALL_WHITE_TONES: 
+        {
+            lightMode = LightMode::PULSE_ALL_RANDOM;
+            break;
+        }
+        case LightMode::PULSE_ALL_RANDOM: 
+        {
+            lightMode = LightMode::PULSE_INDIVIDUAL_WHITE_TONES;
+            break;
+        }
+    }
+    changedLightMode = true;
+}
+
 int GetDelay()
 {
-    return map(ReadPotentiometer(), 0, 1023, MIN_DELAY, MAX_DELAY);
+    return 200;
 }
 
 int GetMaxBrightness()
@@ -40,24 +58,24 @@ int GetMaxBrightness()
     return map(ReadPotentiometer(), 0, 1023, MAX_BRIGHTNESS, MIN_BRIGHTNESS);
 }
 
-void RegisterPin1Change()
+void RegisterButton1Change()
 {
-    if (digitalRead(INPUT_1_PIN) == LOW)
+    if (digitalRead(BUTTON_1_PIN) == LOW)
     {
-        change_pin1_time = millis();
+        changeButton1Time = millis();
         return; 
     }
+    if (millis() - changeButton1Time < LONG_PRESS_TIME_MS) return;
+    ChangePoweMode();
+}
 
-    if (millis() - change_pin1_time <= DEBOUNCE_TIME_MS) 
+void RegisterButton2Change()
+{
+    if (digitalRead(BUTTON_2_PIN) == LOW)
     {
-        return;    
+        changeButton1Time = millis();
+        return; 
     }
-
-    if (millis() - change_pin1_time > LONG_PRESS_TIME_MS)
-    {
-        ChangePoweMode();
-        return;
-    }
-
-    ChangePotentiometerMode();
+    if (millis() - changeButton1Time < DEBOUNCE_TIME_MS) return;
+    ChangeLightMode();
 }

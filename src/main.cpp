@@ -6,24 +6,29 @@
 #include "modes.hpp"
 
 
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
-volatile PotentiometerMode potentiometerMode = PotentiometerMode::BRIGHTNESS;
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(LEDS_NUMBER, LED_PIN, NEO_GRB + NEO_KHZ800);
 volatile PowerMode powerMode = PowerMode::ON;
-int delay_value = 50;
-int max_brightness = 255;
-volatile time change_pin1_time = 0;
+volatile LightMode lightMode = LightMode::PULSE_INDIVIDUAL_WHITE_TONES;
+volatile time changeButton1Time = 0;
+volatile time changeButton2Time = 0;
+volatile int maxBrightness = 255;
+volatile bool changedLightMode = false;
+int delayValue = 50;
 
 
 void setup() 
 {
 	pixels.begin();
 	Serial.begin(9600);
-	pinMode(INPUT_1_PIN, INPUT);
-  	attachInterrupt(digitalPinToInterrupt(INPUT_1_PIN), RegisterPin1Change, CHANGE);
+	pinMode(BUTTON_1_PIN, INPUT_PULLUP);
+  	attachInterrupt(digitalPinToInterrupt(BUTTON_1_PIN), RegisterButton1Change, CHANGE);
+  	attachInterrupt(digitalPinToInterrupt(BUTTON_2_PIN), RegisterButton2Change, CHANGE);
+	TurnOffAll();
 }
 
 
 void loop() 
 {
-	LightItUp(ColorMode::WHITE_TONES, ControlMode::LINEAR);
+	LightItUp();
+	delay(DELAY_TIME);
 }

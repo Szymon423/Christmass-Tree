@@ -12,9 +12,8 @@ public:
     Color();
     Color(int rgb);
     Color(int r, int g, int b);
-
 };
 
 Color GetColor(ColorMode colorMode);
 
-Color GetNextColor(ColorMode colorMode, Color previousColor);
+Color GetNextColor(ColorMode colorMode, Color previousColor, int brightness);

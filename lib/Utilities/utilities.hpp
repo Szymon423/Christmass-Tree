@@ -7,19 +7,22 @@
 /// @return integer value in range [0, 1024] 
 int ReadPotentiometer();
 
-/// @brief function to use in interrupt to controll Potentiometer PotentiometerMode
-void ChangePotentiometerMode();
-
 /// @brief function to use in interrupt to controll Power state of LEDs
 void ChangePoweMode();
 
+/// @brief function to use in interrupt to controll schema of lights
+void ChangeLightMode();
+
 /// @brief function to determine max brightness
-/// @return value of max_brightness 
+/// @return value of maxBrightness 
 int GetMaxBrightness();
 
 /// @brief function to determine delay
 /// @return value of delay in ms 
 int GetDelay();
 
-/// @brief function to use in interrupt to register button release time
-void RegisterPin1Change();
+/// @brief function to use in interrupt to register button 1 changes
+void RegisterButton1Change();
+
+/// @brief function to use in interrupt to register button 2 changes
+void RegisterButton2Change();
