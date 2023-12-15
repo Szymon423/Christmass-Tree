@@ -6,23 +6,39 @@
 
 Color::Color()
 {
-    R = 255;
-    G = 255;
-    B = 255;
+    r = 255.0f;
+    g = 255.0f;
+    b = 255.0f;
 }
 
-Color::Color(int rgb)
+Color::Color(float RGB)
 {
-    R = (int)rgb;
-    G = (int)rgb;
-    B = (int)rgb;
+    RGB = ConstrainTo(RGB, 0.0f,  255.0f);
+    r = RGB;
+    g = RGB;
+    b = RGB;
 }
 
-Color::Color(int r, int g, int b)
+Color::Color(float R, float G, float B)
 {
-    R = (int)r;
-    G = (int)g;
-    B = (int)b;
+    r = ConstrainTo(R, 0.0f,  255.0f);
+    g = ConstrainTo(G, 0.0f,  255.0f);
+    b = ConstrainTo(B, 0.0f,  255.0f);
+}
+
+uint8_t Color::R() const
+{
+    return r > 255.0f ? 255 : (char)r;
+}
+
+uint8_t Color::G() const
+{
+    return g > 255.0f ? 255 : (char)g;
+}
+
+uint8_t Color::B() const
+{
+    return b > 255.0f ? 255 : (char)b;
 }
 
 Color GetColor(ColorMode colorMode)
@@ -47,7 +63,7 @@ Color GetColor(ColorMode colorMode)
     }
 }
 
-Color GetNextColor(ColorMode colorMode, Color previousColor, int brightness)
+Color GetNextColor(ColorMode colorMode, Color last)
 {
     if (powerMode == PowerMode::OFF) return Color(0);
 
@@ -55,16 +71,16 @@ Color GetNextColor(ColorMode colorMode, Color previousColor, int brightness)
     {
         case ColorMode::RANDOM:
         {
-            return Color(random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness));
+            return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
         }
         case ColorMode::WHITE_TONES:
         {
-            return Color(random(MIN_BRIGHTNESS, brightness));
+            return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR);
         }
         /// convert it to future color changing based on previous colors
         default:
         {
-            return Color(random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness), random(MIN_BRIGHTNESS, brightness));
+            return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
         }
     }
 }

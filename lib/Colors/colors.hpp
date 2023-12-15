@@ -1,19 +1,25 @@
 #pragma once
 #include "modes.hpp"
+#include "stdint.h"
+
 
 
 class Color
 {
 public:
-    char R;
-    char G;
-    char B;
+    float r;
+    float g;
+    float b;
 
     Color();
-    Color(int rgb);
-    Color(int r, int g, int b);
+    Color(float RGB);
+    Color(float R, float G, float B);
+
+    uint8_t R() const;
+    uint8_t G() const;
+    uint8_t B() const;
 };
 
 Color GetColor(ColorMode colorMode);
 
-Color GetNextColor(ColorMode colorMode, Color previousColor, int brightness);
+Color GetNextColor(ColorMode colorMode, Color previousColor);

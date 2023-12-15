@@ -22,5 +22,9 @@ void PulseIndividualControl(ColorMode colorMode);
 /// @param colorMode determines colorMode
 void PulseAllControl(ColorMode colorMode);
 
+/// @brief function associated with LEDs selection (one after another)
+/// @param ColorMode determines colorMode
+void LinearControl(ColorMode colorMode);
+
 /// @brief turnes off all LEDs
 void TurnOffAll();

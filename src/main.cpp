@@ -8,7 +8,7 @@
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(LEDS_NUMBER, LED_PIN, NEO_GRB + NEO_KHZ800);
 volatile PowerMode powerMode = PowerMode::ON;
-volatile LightMode lightMode = LightMode::PULSE_INDIVIDUAL_WHITE_TONES;
+volatile LightMode lightMode = LightMode::LINEAR_WHITE_TONES;
 volatile time changeButton1Time = 0;
 volatile time changeButton2Time = 0;
 volatile int maxBrightness = 255;

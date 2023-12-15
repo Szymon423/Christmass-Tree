@@ -27,10 +27,12 @@ void LightItUp()
 		}
 		case LightMode::LINEAR_WHITE_TONES:
 		{
+			LinearControl(ColorMode::WHITE_TONES);
 			break;
 		}
 		case LightMode::LINEAR_RANDOM:
 		{
+			LinearControl(ColorMode::RANDOM);
 			break;
 		}
 		case LightMode::PULSE_INDIVIDUAL_WHITE_TONES:
@@ -90,12 +92,12 @@ void PulseIndividualControl(ColorMode colorMode)
 	float brightness = SmoothBlink(previousValue, change, maxBrightness, done);
 
 	Color otherColor = Color(
-		(int)((float)color.R * brightness / (float)maxBrightness),
-		(int)((float)color.G * brightness / (float)maxBrightness),
-		(int)((float)color.B * brightness / (float)maxBrightness)
+		(int)((float)color.R() * brightness / (float)maxBrightness),
+		(int)((float)color.G() * brightness / (float)maxBrightness),
+		(int)((float)color.B() * brightness / (float)maxBrightness)
 	);
 	
-	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R, otherColor.G, otherColor.B)); 
+	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 	pixels.show(); 
 
 	if (done) 
@@ -124,13 +126,13 @@ void PulseAllControl(ColorMode colorMode)
 	float brightness = SmoothBlink(previousValue, change, maxBrightness, done);
 
 	Color otherColor = Color(
-		(int)((float)color.R * brightness / (float)maxBrightness),
-		(int)((float)color.G * brightness / (float)maxBrightness),
-		(int)((float)color.B * brightness / (float)maxBrightness)
+		(int)((float)color.R() * brightness / (float)maxBrightness),
+		(int)((float)color.G() * brightness / (float)maxBrightness),
+		(int)((float)color.B() * brightness / (float)maxBrightness)
 	);
 	for (int currentLED = 0; currentLED < LEDS_NUMBER; currentLED++)
 	{
-		pixels.setPixelColor(currentLED, pixels.Color(otherColor.R, otherColor.G, otherColor.B)); 
+		pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 	}
 	pixels.show(); 
 
@@ -143,12 +145,50 @@ void PulseAllControl(ColorMode colorMode)
 	previousValue = brightness;
 }
 
+void LinearControl(ColorMode colorMode)
+{
+	static int currentLED{ 0 };
+	static float linearPosition{ 0.0f };		// constrained with [0.0f - 26.0f]
+	static Color color{ GetColor(colorMode) };
+	static int colorChangeCoutner{ 0 };
+
+	maxBrightness = GetMaxBrightness();
+	float difference = CalculateDistance(linearPosition, currentLED);
+	float brightness = 0.0f;
+	
+	if (difference <= WINDOW_SIZE)
+	{
+		brightness = (WINDOW_SIZE - difference) / WINDOW_SIZE * maxBrightness;
+	}
+
+	Color otherColor = Color(
+		(float)color.R() * brightness / (float)maxBrightness,
+		(float)color.G() * brightness / (float)maxBrightness,
+		(float)color.B() * brightness / (float)maxBrightness
+	);
+
+	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
+	pixels.show(); 
+
+	linearPosition += LINEAR_MOVE_INCREMENT;
+	currentLED++;
+	colorChangeCoutner++;
+	
+	if (linearPosition > LEDS_NUMBER) linearPosition = 0.0f;
+	if (currentLED > LEDS_NUMBER) currentLED = 0;
+	if (colorChangeCoutner > COLOR_CHANGE_CYCLE)
+	{
+		colorChangeCoutner = 0;
+		color = GetNextColor(colorMode, color);
+	}
+}
+
 void TurnOffAll()
 {
 	Color color(0);
 	for (int i = 0; i < LEDS_NUMBER; i++)
 	{
-		pixels.setPixelColor(i, pixels.Color(color.R, color.G, color.B)); 
+		pixels.setPixelColor(i, pixels.Color(color.R(), color.G(), color.B())); 
 		pixels.show(); 
 	}
 }
