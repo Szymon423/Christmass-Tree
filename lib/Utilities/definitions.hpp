@@ -17,6 +17,8 @@
 #define LINEAR_MOVE_INCREMENT       0.005f
 #define COLOR_CHANGE_FACTOR         1.0f
 #define COLOR_CHANGE_CYCLE          200
-#define COLOR_CHANGE_SPEED          0.1f
+#define COLOR_THETA_CHANGE          0.02f
+#define COLOR_FI_CHANGE             0.1f
+#define COORDINATES_OFFSET          127.0f
 
 typedef unsigned long time;

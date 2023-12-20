@@ -150,7 +150,6 @@ void LinearControl(ColorMode colorMode)
 	static int currentLED{ 0 };
 	static float linearPosition{ 0.0f };		// constrained with [0.0f - 26.0f]
 	static Color color{ GetColor(colorMode) };
-	static int colorChangeCoutner{ 0 };
 
 	maxBrightness = GetMaxBrightness();
 	float difference = CalculateDistance(linearPosition, currentLED);
@@ -169,20 +168,15 @@ void LinearControl(ColorMode colorMode)
 
 	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 
+	color = GetNextColor(colorMode, color);
 	linearPosition += LINEAR_MOVE_INCREMENT;
 	currentLED++;
-	colorChangeCoutner++;
 	
 	if (linearPosition > LEDS_NUMBER) linearPosition = 0.0f;
 	if (currentLED > LEDS_NUMBER) 
 	{
 		currentLED = 0;
 		pixels.show();
-	}
-	if (colorChangeCoutner > COLOR_CHANGE_CYCLE)
-	{
-		colorChangeCoutner = 0;
-		color = GetNextColor(colorMode, color);
 	}
 }
 

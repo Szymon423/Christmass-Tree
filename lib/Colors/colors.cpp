@@ -17,7 +17,7 @@ Color::Color(float RGB)
     r = RGB;
     g = RGB;
     b = RGB;
-    CartesianToSpherical(r, g, b, radius, theta, fi);
+    CartesianToSpherical();
 }
 
 Color::Color(float R, float G, float B)
@@ -25,36 +25,50 @@ Color::Color(float R, float G, float B)
     r = ConstrainTo(R, 0.0f,  255.0f);
     g = ConstrainTo(G, 0.0f,  255.0f);
     b = ConstrainTo(B, 0.0f,  255.0f);
-    CartesianToSpherical(r, g, b, radius, theta, fi);
+    CartesianToSpherical();
 }
 
 uint8_t Color::R() const
 {
-    return r > 255.0f ? 255 : (char)r;
+    return r > 255.0f ? 255 : (uint8_t)r;
 }
 
 uint8_t Color::G() const
 {
-    return g > 255.0f ? 255 : (char)g;
+    return g > 255.0f ? 255 : (uint8_t)g;
 }
 
 uint8_t Color::B() const
 {
-    return b > 255.0f ? 255 : (char)b;
+    return b > 255.0f ? 255 : (uint8_t)b;
 }
 
-void CartesianToSpherical(float R, float G, float B, float& radius, float& theta, float& fi)
+void Color::Move(float dTheta, float dFi)
 {
-    radius = sqrtf(powf(R, 2.0f) + powf(G, 2.0f) + powf(B, 2.0f));
-    fi = atan2(G, R);
-    theta = asinf(B / radius);
+    CartesianToSpherical();
+    theta += dTheta;
+    if (theta > TWO_PI) theta -= TWO_PI;
+    
+    fi += dFi;
+    if (fi > TWO_PI) fi -= TWO_PI;
+    SphericalToCartesian();
 }
 
-void SphericalToCartesian(float radius, float theta, float fi, float& R, float& G, float& B)
+void Color::CartesianToSpherical()
 {
-    R = radius * cosf(theta) * cosf(fi);
-    G = radius * cosf(theta) * sinf(fi);
-    B = radius * sinf(theta);
+    float _r = r - COORDINATES_OFFSET;
+    float _g = g - COORDINATES_OFFSET;
+    float _b = b - COORDINATES_OFFSET;
+    radius = sqrtf(powf(_r, 2.0f) + powf(_g, 2.0f) + powf(_b, 2.0f));
+    fi = atan2f(sqrtf(powf(_r, 2.0f) + powf(_g, 2.0f)), _b);
+    theta = atan2f(_g, _r);
+}
+
+void Color::SphericalToCartesian()
+{
+    r = radius * sinf(fi) * cosf(theta) + COORDINATES_OFFSET;
+    g = radius * sinf(fi) * sinf(theta) + COORDINATES_OFFSET;
+    b = radius * cosf(fi) + COORDINATES_OFFSET;
 }
 
 Color GetColor(ColorMode colorMode)
@@ -67,7 +81,13 @@ Color GetColor(ColorMode colorMode)
         case ColorMode::RANDOM:
         {
             // return Color(random(MIN_BRIGHTNESS, maxBrightness), random(MIN_BRIGHTNESS, maxBrightness), random(MIN_BRIGHTNESS, maxBrightness));
-            return Color(maxBrightness, 0, 0);
+            Color newColor(0, maxBrightness, 0);
+            
+            String str("Initial color: [");
+            str += String(newColor.r) + ", " + String(newColor.g) + ", " + String(newColor.b) + " - ";
+            str += String(newColor.radius) + ", " + String(newColor.theta) + ", " + String(newColor.fi) + "]";
+            Serial.println(str);
+            return newColor;
         }
         case ColorMode::WHITE_TONES:
         {
@@ -90,7 +110,12 @@ Color GetNextColor(ColorMode colorMode, Color last)
         case ColorMode::RANDOM:
         {
             // return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
-
+            last.Move(COLOR_THETA_CHANGE, COLOR_FI_CHANGE);
+            String str("Next color: [");
+            str += String(last.r) + ", " + String(last.g) + ", " + String(last.b) + " - ";
+            str += String(last.radius) + ", " + String(last.theta) + ", " + String(last.fi) + "]";
+            Serial.println(str);
+            return last;
         }
         case ColorMode::WHITE_TONES:
         {
@@ -100,7 +125,9 @@ Color GetNextColor(ColorMode colorMode, Color last)
         /// convert it to future color changing based on previous colors
         default:
         {
-            return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
+            // return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
+            last.Move(COLOR_THETA_CHANGE, COLOR_FI_CHANGE);
+            return last;
         }
     }
 }

@@ -3,9 +3,10 @@
 #include "stdint.h"
 
 
-
+/// @brief class responsible for nadling color data
 class Color
 {
+public:
     float r;
     float g;
     float b;
@@ -13,34 +14,43 @@ class Color
     float theta;
     float radius;
 
-public:
     Color();
     Color(float RGB);
     Color(float R, float G, float B);
 
+    /// @brief function to move color point (defined in 3dim cartesian space [R-G-B] and spherical)
+    /// @param dTheta change of theta angle to be added to actuall theta
+    /// @param dFi change of fi angle to be added to actuall fi
+    void Move(float dTheta, float dFi);
+
+    /// @brief function to get R value in uint8_t type
+    /// @return R value
     uint8_t R() const;
+
+    /// @brief function to get G value in uint8_t type
+    /// @return G value
     uint8_t G() const;
+
+    /// @brief function to get B value in uint8_t type
+    /// @return B value
     uint8_t B() const;
+
+    /// @brief function to convert from cartesian to spherical coordinate system
+    void CartesianToSpherical();
+
+    /// @brief function to convert from spherical to cartesian coordinate system
+    void SphericalToCartesian();
 };
 
-/// @brief function to convert from cartesian to spherical coordinate system !!!!!!!!!!!!! need to change to use offset
-/// @param R value of y
-/// @param G value of x
-/// @param B value of z
-/// @param radius reference value
-/// @param theta reference value
-/// @param fi reference value
-void CartesianToSpherical(float R, float G, float B, float& radius, float& theta, float& fi);
 
-/// @brief function to convert from spherical to cartesian coordinate system !!!!!!!!!!!!! need to change to use offset
-/// @param radius 
-/// @param theta 
-/// @param fi 
-/// @param R reference value of y
-/// @param G reference value of x
-/// @param B reference value of z
-void SphericalToCartesian(float radius, float theta, float fi, float& R, float& G, float& B);
 
+/// @brief function to create color based on choosen colorMode
+/// @param colorMode is choosen color mode
+/// @return Color class object
 Color GetColor(ColorMode colorMode);
 
+/// @brief function to create color based on choosen colorMode
+/// @param colorMode is choosen color mode
+/// @param previousColor previously choosen color
+/// @return Color class object
 Color GetNextColor(ColorMode colorMode, Color previousColor);

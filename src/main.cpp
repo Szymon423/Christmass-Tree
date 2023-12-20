@@ -8,7 +8,7 @@
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(LEDS_NUMBER, LED_PIN, NEO_GRB + NEO_KHZ800);
 volatile PowerMode powerMode = PowerMode::ON;
-volatile LightMode lightMode = LightMode::LINEAR_WHITE_TONES;
+volatile LightMode lightMode = LightMode::LINEAR_RANDOM;
 volatile time changeButton1Time = 0;
 volatile time changeButton2Time = 0;
 volatile int maxBrightness = 255;
@@ -20,10 +20,12 @@ void setup()
 {
 	pixels.begin();
 	Serial.begin(9600);
+	delay(2000);
 	pinMode(BUTTON_1_PIN, INPUT_PULLUP);
   	attachInterrupt(digitalPinToInterrupt(BUTTON_1_PIN), RegisterButton1Change, CHANGE);
   	attachInterrupt(digitalPinToInterrupt(BUTTON_2_PIN), RegisterButton2Change, CHANGE);
 	TurnOffAll();
+	maxBrightness = GetMaxBrightness();
 	pixels.setBrightness(100);
 }
 
