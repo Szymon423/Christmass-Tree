@@ -24,6 +24,7 @@ void setup()
   	attachInterrupt(digitalPinToInterrupt(BUTTON_1_PIN), RegisterButton1Change, CHANGE);
   	attachInterrupt(digitalPinToInterrupt(BUTTON_2_PIN), RegisterButton2Change, CHANGE);
 	TurnOffAll();
+	pixels.setBrightness(100);
 }
 
 

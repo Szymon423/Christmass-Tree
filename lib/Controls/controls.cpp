@@ -168,14 +168,17 @@ void LinearControl(ColorMode colorMode)
 	);
 
 	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
-	pixels.show(); 
 
 	linearPosition += LINEAR_MOVE_INCREMENT;
 	currentLED++;
 	colorChangeCoutner++;
 	
 	if (linearPosition > LEDS_NUMBER) linearPosition = 0.0f;
-	if (currentLED > LEDS_NUMBER) currentLED = 0;
+	if (currentLED > LEDS_NUMBER) 
+	{
+		currentLED = 0;
+		pixels.show();
+	}
 	if (colorChangeCoutner > COLOR_CHANGE_CYCLE)
 	{
 		colorChangeCoutner = 0;
@@ -189,6 +192,6 @@ void TurnOffAll()
 	for (int i = 0; i < LEDS_NUMBER; i++)
 	{
 		pixels.setPixelColor(i, pixels.Color(color.R(), color.G(), color.B())); 
-		pixels.show(); 
 	}
+	pixels.show(); 
 }
