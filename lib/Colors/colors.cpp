@@ -1,6 +1,7 @@
+#include "Arduino.h"
+#include "log.hpp"
 #include "colors.hpp"
 #include "modes.hpp"
-#include "Arduino.h"
 #include "utilities.hpp"
 #include "extern.hpp"
 
@@ -45,12 +46,20 @@ uint8_t Color::B() const
 
 void Color::Move(float dTheta, float dFi)
 {
-    CartesianToSpherical();
+    // CartesianToSpherical();
+
+    radius = GetMaxBrightness();
     theta += dTheta;
-    if (theta > TWO_PI) theta -= TWO_PI;
+    if (theta > PI)
+    {
+        theta -= TWO_PI;
+    }
     
     fi += dFi;
-    if (fi > TWO_PI) fi -= TWO_PI;
+    if (fi > PI)
+    {
+        fi -= TWO_PI;
+    }
     SphericalToCartesian();
 }
 
@@ -66,9 +75,9 @@ void Color::CartesianToSpherical()
 
 void Color::SphericalToCartesian()
 {
-    r = radius * sinf(fi) * cosf(theta) + COORDINATES_OFFSET;
-    g = radius * sinf(fi) * sinf(theta) + COORDINATES_OFFSET;
-    b = radius * cosf(fi) + COORDINATES_OFFSET;
+    r = COORDINATES_OFFSET + radius * sinf(fi) * cosf(theta);
+    g = COORDINATES_OFFSET + radius * sinf(fi) * sinf(theta);
+    b = COORDINATES_OFFSET + radius * cosf(fi);
 }
 
 Color GetColor(ColorMode colorMode)
@@ -86,7 +95,7 @@ Color GetColor(ColorMode colorMode)
             String str("Initial color: [");
             str += String(newColor.r) + ", " + String(newColor.g) + ", " + String(newColor.b) + " - ";
             str += String(newColor.radius) + ", " + String(newColor.theta) + ", " + String(newColor.fi) + "]";
-            Serial.println(str);
+            SERIAL_PRINTLN(str);
             return newColor;
         }
         case ColorMode::WHITE_TONES:
@@ -114,7 +123,7 @@ Color GetNextColor(ColorMode colorMode, Color last)
             String str("Next color: [");
             str += String(last.r) + ", " + String(last.g) + ", " + String(last.b) + " - ";
             str += String(last.radius) + ", " + String(last.theta) + ", " + String(last.fi) + "]";
-            Serial.println(str);
+            SERIAL_PRINTLN(str);
             return last;
         }
         case ColorMode::WHITE_TONES:

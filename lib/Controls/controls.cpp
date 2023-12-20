@@ -168,15 +168,15 @@ void LinearControl(ColorMode colorMode)
 
 	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 
-	color = GetNextColor(colorMode, color);
 	linearPosition += LINEAR_MOVE_INCREMENT;
 	currentLED++;
 	
 	if (linearPosition > LEDS_NUMBER) linearPosition = 0.0f;
 	if (currentLED > LEDS_NUMBER) 
 	{
-		currentLED = 0;
+		color = GetNextColor(colorMode, color);
 		pixels.show();
+		currentLED = 0;
 	}
 }
 

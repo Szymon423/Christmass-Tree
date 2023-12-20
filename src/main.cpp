@@ -4,6 +4,7 @@
 #include "definitions.hpp"
 #include "controls.hpp"
 #include "modes.hpp"
+#include "log.hpp"
 
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(LEDS_NUMBER, LED_PIN, NEO_GRB + NEO_KHZ800);
@@ -19,7 +20,7 @@ int delayValue = 50;
 void setup() 
 {
 	pixels.begin();
-	Serial.begin(9600);
+	SERIAL_BEGIN(9600);
 	delay(2000);
 	pinMode(BUTTON_1_PIN, INPUT_PULLUP);
   	attachInterrupt(digitalPinToInterrupt(BUTTON_1_PIN), RegisterButton1Change, CHANGE);
