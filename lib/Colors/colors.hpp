@@ -10,7 +10,7 @@ public:
     float r;
     float g;
     float b;
-    float fi;
+    float phi;
     float theta;
     float radius;
 
@@ -19,9 +19,7 @@ public:
     Color(float R, float G, float B);
 
     /// @brief function to move color point (defined in 3dim cartesian space [R-G-B] and spherical)
-    /// @param dTheta change of theta angle to be added to actuall theta
-    /// @param dFi change of fi angle to be added to actuall fi
-    void Move(float dTheta, float dFi);
+    void Move();
 
     /// @brief function to get R value in uint8_t type
     /// @return R value

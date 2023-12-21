@@ -44,40 +44,33 @@ uint8_t Color::B() const
     return b > 255.0f ? 255 : (uint8_t)b;
 }
 
-void Color::Move(float dTheta, float dFi)
+void Color::Move()
 {
+    static float dTheta{ COLOR_THETA_CHANGE };
+    static float dPhi{ COLOR_PHI_CHANGE };
     // CartesianToSpherical();
-
     radius = GetMaxBrightness();
+    if (theta > HALF_PI || theta < 0.0f) dTheta *= (-1.0f); 
     theta += dTheta;
-    if (theta > PI)
-    {
-        theta -= TWO_PI;
-    }
     
-    fi += dFi;
-    if (fi > PI)
-    {
-        fi -= TWO_PI;
-    }
+    if (phi > HALF_PI || phi < 0.0f) dPhi *= (-1.0f);
+    phi += dPhi;
+
     SphericalToCartesian();
 }
 
 void Color::CartesianToSpherical()
 {
-    float _r = r - COORDINATES_OFFSET;
-    float _g = g - COORDINATES_OFFSET;
-    float _b = b - COORDINATES_OFFSET;
-    radius = sqrtf(powf(_r, 2.0f) + powf(_g, 2.0f) + powf(_b, 2.0f));
-    fi = atan2f(sqrtf(powf(_r, 2.0f) + powf(_g, 2.0f)), _b);
-    theta = atan2f(_g, _r);
+    radius = sqrtf(powf(r, 2.0f) + powf(g, 2.0f) + powf(b, 2.0f));
+    phi = atan2f(sqrtf(powf(r, 2.0f) + powf(g, 2.0f)), b);
+    theta = atan2f(g, r);
 }
 
 void Color::SphericalToCartesian()
 {
-    r = COORDINATES_OFFSET + radius * sinf(fi) * cosf(theta);
-    g = COORDINATES_OFFSET + radius * sinf(fi) * sinf(theta);
-    b = COORDINATES_OFFSET + radius * cosf(fi);
+    r = ConstrainTo(radius * sinf(phi) * cosf(theta), 0.0f,  255.0f);
+    g = ConstrainTo(radius * sinf(phi) * sinf(theta), 0.0f,  255.0f);
+    b = ConstrainTo(radius * cosf(phi), 0.0f,  255.0f);
 }
 
 Color GetColor(ColorMode colorMode)
@@ -94,7 +87,7 @@ Color GetColor(ColorMode colorMode)
             
             String str("Initial color: [");
             str += String(newColor.r) + ", " + String(newColor.g) + ", " + String(newColor.b) + " - ";
-            str += String(newColor.radius) + ", " + String(newColor.theta) + ", " + String(newColor.fi) + "]";
+            str += String(newColor.radius) + ", " + String(newColor.theta) + ", " + String(newColor.phi) + "]";
             SERIAL_PRINTLN(str);
             return newColor;
         }
@@ -119,10 +112,10 @@ Color GetNextColor(ColorMode colorMode, Color last)
         case ColorMode::RANDOM:
         {
             // return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
-            last.Move(COLOR_THETA_CHANGE, COLOR_FI_CHANGE);
+            last.Move();
             String str("Next color: [");
             str += String(last.r) + ", " + String(last.g) + ", " + String(last.b) + " - ";
-            str += String(last.radius) + ", " + String(last.theta) + ", " + String(last.fi) + "]";
+            str += String(last.radius) + ", " + String(last.theta) + ", " + String(last.phi) + "]";
             SERIAL_PRINTLN(str);
             return last;
         }
@@ -135,7 +128,7 @@ Color GetNextColor(ColorMode colorMode, Color last)
         default:
         {
             // return Color(last.R() + randomf() * COLOR_CHANGE_FACTOR, last.G() + randomf() * COLOR_CHANGE_FACTOR, last.B() + randomf() * COLOR_CHANGE_FACTOR);
-            last.Move(COLOR_THETA_CHANGE, COLOR_FI_CHANGE);
+            last.Move();
             return last;
         }
     }

@@ -99,6 +99,7 @@ void PulseIndividualControl(ColorMode colorMode)
 	
 	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 	pixels.show(); 
+	color = GetNextColor(colorMode, color);
 
 	if (done) 
 	{
@@ -110,7 +111,6 @@ void PulseIndividualControl(ColorMode colorMode)
 		while (next == currentLED);
 		currentLED = next;
 		done = false;
-		color = GetColor(colorMode);
 	}
 
 	previousValue = brightness;
@@ -139,8 +139,8 @@ void PulseAllControl(ColorMode colorMode)
 	if (done) 
 	{
 		done = false;
-		color = GetColor(colorMode);
 	}
+	color = GetNextColor(colorMode, color);
 
 	previousValue = brightness;
 }

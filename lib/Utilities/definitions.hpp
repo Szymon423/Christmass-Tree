@@ -19,7 +19,7 @@
 #define COLOR_CHANGE_FACTOR         1.0f
 #define COLOR_CHANGE_CYCLE          200
 #define COLOR_THETA_CHANGE          0.03f
-#define COLOR_FI_CHANGE             0.07f
+#define COLOR_PHI_CHANGE             0.07f
 #define COORDINATES_OFFSET          127.0f
 
 typedef unsigned long time;
