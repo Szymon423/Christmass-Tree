@@ -86,6 +86,7 @@ void PulseIndividualControl(ColorMode colorMode)
 	static int currentLED{ 14 };
 	static bool done{ false };
 	static float previousValue{ 0.0f };
+	static uint8_t cholorChangeCounter{ 0 };
 	static Color color = GetColor(colorMode);
 	maxBrightness = GetMaxBrightness();
 	float change = (float)maxBrightness * DELAY_TIME / BLINK_TIME;
@@ -99,7 +100,13 @@ void PulseIndividualControl(ColorMode colorMode)
 	
 	pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 	pixels.show(); 
-	color = GetNextColor(colorMode, color);
+	cholorChangeCounter++;
+
+	if (cholorChangeCounter > 200)
+	{
+		color = GetNextColor(colorMode, color);
+		cholorChangeCounter = 0;
+	}
 
 	if (done) 
 	{
@@ -121,6 +128,7 @@ void PulseAllControl(ColorMode colorMode)
 	static bool done{ false };
 	static float previousValue{ 0.0f };
 	static Color color = GetColor(colorMode);
+	static uint8_t cholorChangeCounter{ 0 };
 	maxBrightness = GetMaxBrightness();
 	float change = (float)maxBrightness * DELAY_TIME / BLINK_TIME;
 	float brightness = SmoothBlink(previousValue, change, maxBrightness, done);
@@ -130,17 +138,24 @@ void PulseAllControl(ColorMode colorMode)
 		(int)((float)color.G() * brightness / (float)maxBrightness),
 		(int)((float)color.B() * brightness / (float)maxBrightness)
 	);
+
 	for (int currentLED = 0; currentLED < LEDS_NUMBER; currentLED++)
 	{
 		pixels.setPixelColor(currentLED, pixels.Color(otherColor.R(), otherColor.G(), otherColor.B())); 
 	}
 	pixels.show(); 
+	cholorChangeCounter++;
+
+	if (cholorChangeCounter > 200)
+	{
+		color = GetNextColor(colorMode, color);
+		cholorChangeCounter = 0;
+	}
 
 	if (done) 
 	{
 		done = false;
 	}
-	color = GetNextColor(colorMode, color);
 
 	previousValue = brightness;
 }

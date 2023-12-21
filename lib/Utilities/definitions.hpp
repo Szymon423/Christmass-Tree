@@ -1,6 +1,6 @@
 #pragma once
 
-#define CONSOLE_LOG
+// #define CONSOLE_LOG
 #define LED_PIN                     7
 #define BUTTON_1_PIN		        1
 #define BUTTON_2_PIN                2
