@@ -1,0 +1,5 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "48037-0001")(type "KiCad")(uri "/home/szymon/Projects/Personal/Christmass-Tree/Hardware/KiCad/Library/48037-0001/48037-0001.pretty")(options "")(descr ""))
+  (lib (name "WS2812C-2020")(type "KiCad")(uri "/home/szymon/Projects/Personal/Christmass-Tree/Hardware/KiCad/Library/WS2812C-2020/WS2812C-2020.pretty")(options "")(descr ""))
+)

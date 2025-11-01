@@ -1,0 +1,225 @@
+(footprint "WS2812C2020"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "WS2812C-2020-2")
+	(tags "LED")
+	(property "Reference" "LED**"
+		(at 4.25 0 0)
+		(layer "F.SilkS")
+		(uuid "30dd9985-a199-4743-bb42-a5151d0dc40d")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Value" "WS2812C2020"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "d77d4faa-a25b-40da-86d8-237b0a49b5d5")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7d07bcde-4f96-44d1-96b7-d127d51f0828")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "58748cf5-d7e8-4d2e-b7b8-df2dd4adc015")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -0.4 -1)
+		(end 0.4 -1)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "36848ad8-64b9-453d-9c06-3af0f41bb882")
+	)
+	(fp_line
+		(start -0.4 1)
+		(end 0.4 1)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "eb27537c-f755-447e-b654-03e3d408bf0b")
+	)
+	(fp_arc
+		(start 0.6746 1.1)
+		(mid 0.7 1.0746)
+		(end 0.7254 1.1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "79204c95-d9f9-4ec5-83c9-7806abf0f69d")
+	)
+	(fp_arc
+		(start 0.7254 1.1)
+		(mid 0.7 1.1254)
+		(end 0.6746 1.1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "8137768f-0581-43d3-a506-aa8530f619e8")
+	)
+	(fp_line
+		(start -1.5 -1.25)
+		(end 1.5 -1.25)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "0f17f2d1-d19b-4dde-857d-812d32caae2c")
+	)
+	(fp_line
+		(start -1.5 1.25)
+		(end -1.5 -1.25)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "79954175-cc65-4e32-95c4-44b6ed95cf17")
+	)
+	(fp_line
+		(start 1.5 -1.25)
+		(end 1.5 1.25)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "86830b7a-6c31-4669-9fa5-db7b5258940b")
+	)
+	(fp_line
+		(start 1.5 1.25)
+		(end -1.5 1.25)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "c5c71e6e-54e7-4d37-be9d-32875e0b7b63")
+	)
+	(fp_line
+		(start -1.1 -1)
+		(end 1.1 -1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "cac16392-3c89-4210-9494-29a10ec0bf20")
+	)
+	(fp_line
+		(start -1.1 1)
+		(end -1.1 -1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "bb7e5bf4-2282-4d38-abc1-a0370dfc4a7a")
+	)
+	(fp_line
+		(start 1.1 -1)
+		(end 1.1 1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "cea26efd-8d48-4061-ba6a-5cb9c6316df5")
+	)
+	(fp_line
+		(start 1.1 1)
+		(end -1.1 1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "85b9b7a9-c858-4af9-b661-d78b9a458178")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "4b24bc65-1bb0-4424-a39b-14e85c8026c3")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at 0.915 0.55 90)
+		(size 0.7 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "66bcff69-6449-4a62-a0a2-ca15307d6cdd")
+	)
+	(pad "2" smd rect
+		(at 0.915 -0.55 90)
+		(size 0.7 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "98bdc4ab-73a2-4ede-94e9-1abd3e2dccd9")
+	)
+	(pad "3" smd rect
+		(at -0.915 -0.55 90)
+		(size 0.7 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "ad1b3cb7-395e-455a-b327-67fb89f4d2b4")
+	)
+	(pad "4" smd rect
+		(at -0.915 0.55 90)
+		(size 0.7 0.7)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "48268463-7333-4970-babc-45c0a573f038")
+	)
+	(embedded_fonts no)
+	(model "/home/szymon/Projects/Personal/Christmass-Tree/Hardware/KiCad/Library/WS2812C-2020/WS2812C-2020.pretty/WS2812C-2020.stp"
+		(offset
+			(xyz 0 0 0.1500000037)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 0)
+		)
+	)
+)

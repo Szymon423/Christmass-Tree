@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "USB1040-GF-L-B")(type "KiCad")(uri "${KIPRJMOD}/../Library/USB1040-GF-L-B/USB1040-GF-L-B.pretty")(options "")(descr ""))
+)
